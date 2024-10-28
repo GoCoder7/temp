@@ -5,7 +5,7 @@
   import type { FileSelecterProps } from "$lib/types/file";
   import FileSelectSection from "$lib/components/file-select-section.svelte";
   import { message, confirm, ask } from "@tauri-apps/plugin-dialog";
-    import { execute } from "$lib/services/logic";
+  import { execute } from "$lib/services/logic";
 
   let csvProps: FileSelecterProps = $state({
     title: "csv 파일 선택",
@@ -23,7 +23,7 @@
   $inspect({ csvProps, pdfProps, xlProps });
 </script>
 
-<main class="flex items-center justify-center h-screen">
+<main class="flex flex-col items-center justify-center h-screen">
   <Card.Root>
     <Card.Header class="mb-4">
       <Card.Title>Diff Checker</Card.Title>
