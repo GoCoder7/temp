@@ -768,6 +768,7 @@ name = "diff_checker"
 version = "0.1.0"
 dependencies = [
  "csv",
+ "encoding_rs",
  "serde",
  "serde_json",
  "specta",

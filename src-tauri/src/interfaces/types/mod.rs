@@ -14,12 +14,10 @@ pub struct Paths {
 
 pub struct PdfTable {
     pub page_tables: Vec<PageTable>,
-    num_pages: u32,
 }
 
 #[derive(Debug, serde::Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct PageTable {
-    page: u32,
     pub tables: Vec<Vec<String>>,
 }

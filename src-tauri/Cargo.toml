@@ -27,4 +27,5 @@ specta = "=2.0.0-rc.20"
 specta-typescript = "0.0.7"
 tauri-specta = { version = "=2.0.0-rc.20", features = ["derive", "typescript"] }
 csv = "1.3.0"
+encoding_rs = "0.8.35"
 

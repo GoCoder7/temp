@@ -28,7 +28,7 @@
     <Card.Header class="mb-4">
       <Card.Title>Diff Checker</Card.Title>
       <Card.Description>
-        CSV파일과 PDF파일을 비교하여 엑셀 파일을 작성합니다
+        CSV파일과 PDF파일을 비교하여 엑셀파일로 저장합니다
       </Card.Description>
     </Card.Header>
     <hr />
