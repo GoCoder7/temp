@@ -6,18 +6,19 @@ use tauri_plugin_shell::ShellExt;
 use crate::interfaces::types::{Paths, PdfTable};
 
 pub async fn get_pdf_data(app: &AppHandle, paths: &Paths) -> Vec<Vec<String>> {
-    let pdf_path: &String = &paths.pdf_path;
-    let pdf_tbl: PdfTable = get_pdf_table_from_file(&app, &pdf_path).await;
-    let pdf_tbl_vec2: Vec<Vec<String>> = get_vec2_from_pdf_table(&pdf_tbl);
-    pdf_tbl_vec2
+    let path: &String = &paths.pdf_path;
+    let tbl: PdfTable = get_pdf_table_from_file(&app, &path).await;
+    get_vec2_from_pdf_table(&tbl)
 }
 
 pub fn get_csv_data(paths: &Paths) -> Vec<Vec<String>> {
     // EUC-KR 파일이면 UTF-8로 변환
-    let csv_path = &paths.csv_path;
-    convert_to_utf8_if_euckr(csv_path).expect("failed to convert to utf-8");
-    let mut csv_vec2: Vec<Vec<String>> = get_vec2_from_csv(csv_path);
-    csv_vec2
+    let path = &paths.csv_path;
+    convert_to_utf8_if_euckr(path).expect("failed to convert to utf-8");
+    get_vec2_from_csv(path)
+}
+
+pub fn make_xl(paths: &Paths) {
 }
 
 pub async fn get_pdf_table_from_file(app: &AppHandle, path: &str) -> PdfTable {
@@ -31,7 +32,7 @@ pub async fn get_pdf_table_from_file(app: &AppHandle, path: &str) -> PdfTable {
     serde_json::from_str(&res_str).expect("failed to parse json")
 }
 
-// PdfTable의 각 PageTable의 tables를 2차원 벡터로 변환(필터링 및 열바꿈 적용)
+// PdfTable의 각 PageTable의 tables를 2차원 벡터로 변환(필터링 적용)
 pub fn get_vec2_from_pdf_table(pdf_table: &PdfTable) -> Vec<Vec<String>> {
     let mut data: Vec<Vec<String>> = Vec::new();
     let header: Vec<String> = vec![
@@ -45,14 +46,15 @@ pub fn get_vec2_from_pdf_table(pdf_table: &PdfTable) -> Vec<Vec<String>> {
         "certi.".to_owned(),
         "kg".to_owned()
       ];
-    // 데이터 작성
+    // 필터링
     for page_table in &pdf_table.page_tables {
         for row in &page_table.tables {
-            // 빈 행과 중복된 헤더 제거
+            // 빈 행과 헤더 행
             let all_empty_or_header = row.iter().all(|x| x.is_empty() || header.contains(x));
-            // 필터링
+            // 타겟이 아닌 행
             let target_material = vec!["AH32", "DH32", "EH32","AH36", "DH36", "EH36"];
             let is_not_target = !(row[5].starts_with("pl.") && target_material.contains(&row[6].as_ref()));
+
             if all_empty_or_header || is_not_target {
                 continue;
             } else {
@@ -60,7 +62,6 @@ pub fn get_vec2_from_pdf_table(pdf_table: &PdfTable) -> Vec<Vec<String>> {
             }
         }
     }
-    // 열 순서 변경
     data
 }
 
