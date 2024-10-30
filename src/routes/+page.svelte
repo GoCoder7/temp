@@ -6,6 +6,8 @@
   import FileSelectSection from "$lib/components/file-select-section.svelte";
   import { message, confirm, ask } from "@tauri-apps/plugin-dialog";
   import { execute } from "$lib/services/logic";
+  import { info } from '@tauri-apps/plugin-log';
+
 
   let csvProps: FileSelecterProps = $state({
     title: "csv 파일 선택",
@@ -20,7 +22,19 @@
     extensions: ["xlsx"],
     save: true,
   });
-  $inspect({ csvProps, pdfProps, xlProps });
+  $effect(() => {
+    csvProps;
+    info('csvPath selected');
+  })
+  $effect(() => {
+    pdfProps;
+    info('pdfPath selected');
+  })
+  $effect(() => {
+    xlProps;
+    info('xlPath selected');
+  })
+
 </script>
 
 <main class="flex flex-col items-center justify-center h-screen">
