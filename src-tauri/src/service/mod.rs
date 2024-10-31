@@ -62,6 +62,7 @@ pub fn make_xl(paths: &Paths, pdf_data: Vec<Vec<String>>, csv_data: Vec<Vec<Stri
             }
             _ => (),
         };
+        cell.get_style_mut().get_alignment_mut().set_horizontal(HorizontalAlignmentValues::Center);
     }
     xl_row_i += 1;
 
@@ -92,6 +93,7 @@ pub fn make_xl(paths: &Paths, pdf_data: Vec<Vec<String>>, csv_data: Vec<Vec<Stri
             let xl_col_i = (csv_col_i + 1) as u32;
 
             let cell = sht.get_cell_mut((xl_col_i, xl_row_i));
+            cell.get_style_mut().get_alignment_mut().set_horizontal(HorizontalAlignmentValues::Center);
 
             // 1. 비교 후 에러가 있는 경우, 에러벡터에 추가
             if !absence {
@@ -182,10 +184,8 @@ pub fn make_xl(paths: &Paths, pdf_data: Vec<Vec<String>>, csv_data: Vec<Vec<Stri
 
             for xl_col_i in 10..=11 {
                 let cell = sht.get_cell_mut((xl_col_i, xl_row_i));
-                cell.get_style_mut()
-                    .get_font_mut()
-                    .get_color_mut()
-                    .set_argb(Color::COLOR_RED);
+                cell.get_style_mut().get_font_mut().get_color_mut().set_argb(Color::COLOR_RED);
+                cell.get_style_mut().get_alignment_mut().set_horizontal(HorizontalAlignmentValues::Center);
 
                 if xl_col_i == 10 {
                     cell.set_value("N.G");

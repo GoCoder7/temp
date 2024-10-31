@@ -1,8 +1,8 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "diff_checker",
+  "productName": "diff-checker",
   "version": "0.1.0",
-  "identifier": "xyz.gocoder.bossmarine.diff_checker",
+  "identifier": "xyz.gocoder.bossmarine.diff-checker",
   "build": {
     "beforeDevCommand": "pnpm dev",
     "devUrl": "http://localhost:1420",
@@ -12,7 +12,7 @@
   "app": {
     "windows": [
       {
-        "title": "diff_checker",
+        "title": "Diff Checker",
         "width": 800,
         "height": 600
       }
