@@ -79,12 +79,14 @@ pub fn make_xl(paths: &Paths, pdf_data: Vec<Vec<String>>, csv_data: Vec<Vec<Stri
                 match xl_col_i {
                     // 두께와 dimension 비교
                     3 => {
-                        let dimension = &pdf_row[5].split(".").last().unwrap_or("").to_owned();
-                        let thickness = &csv_row[csv_col_i]
-                            .split(".")
-                            .next()
-                            .unwrap_or("")
-                            .to_owned();
+                        let dimension = match pdf_row[5].split(".").collect::<Vec<&str>>(){
+                            parts if parts.len() == 1 => parts[0].to_owned(),
+                            parts => parts[1..].join(".").to_owned(),
+                        };
+                        let thickness = match &csv_row[csv_col_i].parse::<f64>() {
+                            Ok(thickness) => (*thickness as u64).to_string(),
+                            Err(_) => csv_row[csv_col_i].to_owned(),
+                        };
                         if thickness != dimension {
                             err_msgs.push("두께 불일치".to_owned());
                             cell.get_style_mut()
@@ -95,7 +97,8 @@ pub fn make_xl(paths: &Paths, pdf_data: Vec<Vec<String>>, csv_data: Vec<Vec<Stri
                     }
                     // GRADE와 material 비교
                     4 => {
-                        let material = &pdf_row[6];
+                        let material = &pdf_row[6].split("\n").map(|str| str.trim()).collect::<Vec<&str>>().join(" ").trim().to_owned();
+                        println!("GRADE(csv): {}, material(pdf): {}", csv_row[csv_col_i], material);
                         if &csv_row[csv_col_i] != material {
                             err_msgs.push("GRADE 불일치".to_owned());
                             cell.get_style_mut()

@@ -43,9 +43,13 @@ pub fn get_vec2_from_pdf_table(pdf_table: &PdfTable) -> Vec<Vec<String>> {
             // 빈 행과 헤더 행
             let all_empty_or_header = row.iter().all(|x| x.is_empty() || header.contains(x));
             // 타겟이 아닌 행
-            let target_material = vec!["AH32", "DH32", "EH32", "AH36", "DH36", "EH36"];
-            let is_not_target =
-                !(row[5].starts_with("pl.") && target_material.contains(&row[6].as_ref()));
+            let start_tgt_kwd = vec!["A","B", "D", "E", "AH", "BH", "DH", "EH"];
+            let mid_tgt = vec!["S355", "S235", "mild", "steel"];
+            let is_not_target = 
+                !(
+                    start_tgt_kwd.iter().any(|str| row[6].starts_with(str)) ||
+                    mid_tgt.iter().any(|str| row[6].contains(str))
+                );
 
             if all_empty_or_header || is_not_target {
                 continue;
